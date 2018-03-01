@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>OneBounceyBoi</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="objects.js"></script>
+</head>
+<body>
+
+<canvas id="myCanvas" width="900" height="900"></canvas>
+
+<script>
+    //alert("Running");
+	var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+
+    var height = canvas.height;
+    var width = canvas.width;
+
+    var gravity = 9.81;
+
+    //alert("height = " + height + " width = " + width);
+    
+    function drawGame(){
+        context.clearRect(0,0,width,height);
+        drawPlayer();
+        drawLevel();
+    }
+
+    function drawLevel(){
+
+    }
+
+    function drawPlayer(){
+        makeRectangle(playerOne.position.x, playerOne.position.y, playerOne.size.width, playerOne.size.height, "violet");
+    }
+
+
+
+    function makeRectangle (x , y , w , h , colour){
+        context.beginPath();
+        context.rect( x , y , w , h );
+        context.fillStyle = colour;
+        context.fill();
+        context.closePath();
+    }
+
+
+    var keys = {};
+    window.onkeyup = function(e) { keys[e.keyCode] = false; }
+    window.onkeydown = function(e) { keys[e.keyCode] = true; }
+
+    function processKeys()
+    {
+
+        if( keys[ 37 ] )
+        {
+            playerOne.position.x -= playerOne.exitVelocity;
+        }
+
+        if( keys[ 39 ] )
+        {
+            playerOne.position.x += playerOne.exitVelocity;
+        }
+
+        if( keys[ 38 ] )
+        {
+            playerOne.velocity.y -= playerOne.exitVelocity;
+        }
+
+        if( keys[ 40 ] )
+        {
+            playerOne.velocity.y += playerOne.exitVelocity;
+        }
+
+        if( playerOne.position.x < 0 )
+        {
+            playerOne.position.x = 0;
+        }
+
+        if( playerOne.position.y < 0 )
+        {
+            playerOne.position.y = 0;
+        }
+
+    }
+
+    function checkPosition()
+    {
+        if( playerOne.position.x > ( width -  playerOne.size.width ) )
+        {
+            playerOne.position.x = width -  playerOne.size.width;
+        }
+
+        if( playerOne.position.y > ( height -  playerOne.size.height ) )
+        {
+            playerOne.position.y = height -  playerOne.size.height;
+            playerOne.velocity.y = -playerOne.velocity.y * 0.4;
+
+            if( Math.abs( playerOne.velocity.y ) < 20 )
+            {
+                playerOne.velocity.y = 0;
+            }
+        }
+    }
+
+    function getTicks()
+    {
+        var date = new Date();
+        return date.getTime();
+    }
+
+    var oldTicks = getTicks();
+
+    function gameLoop()
+    {
+        var ticks = getTicks();
+        processKeys();
+        processPhysics( oldTicks, ticks )
+        checkPosition();
+        drawGame();
+
+        oldTicks = ticks;
+    }
+
+    function processPhysics( oldTicks, ticks )
+    {
+        var deltaT = ( ticks - oldTicks ) / 50;
+
+        playerOne.position.x += playerOne.velocity.x * deltaT;
+        playerOne.position.y += playerOne.velocity.y * deltaT;
+
+    //    if( ! playerOne.onGround )
+        //{
+            playerOne.velocity.y += gravity * deltaT;
+    //    }
+    }
+
+
+    setInterval( gameLoop, 20 );
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
