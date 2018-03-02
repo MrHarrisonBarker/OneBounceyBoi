@@ -21,10 +21,15 @@
     var gravity = 9.81;
 
     //alert("height = " + height + " width = " + width);
-    
-    function drawGame(){
+
+    function drawGame()
+    {
         context.clearRect(0,0,width,height);
-        drawPlayer();
+
+        players.forEach( player => {
+            drawPlayer( player )
+        });
+
         drawLevel();
     }
 
@@ -32,8 +37,8 @@
 
     }
 
-    function drawPlayer(){
-        makeRectangle(playerOne.position.x, playerOne.position.y, playerOne.size.width, playerOne.size.height, "violet");
+    function drawPlayer( player ){
+        makeRectangle(player.Position.X, player.Position.Y, player.Size.Width, player.Size.Height, "violet");
     }
 
 
@@ -56,53 +61,55 @@
 
         if( keys[ 37 ] )
         {
-            playerOne.position.x -= playerOne.exitVelocity;
+            players[0].Position.x -= 10;
         }
 
         if( keys[ 39 ] )
         {
-            playerOne.position.x += playerOne.exitVelocity;
+            players[0].Position.x += 10;
         }
 
         if( keys[ 38 ] )
         {
-            playerOne.velocity.y -= playerOne.exitVelocity;
+            players[0].Position.y -= 10;
         }
 
         if( keys[ 40 ] )
         {
-            playerOne.velocity.y += playerOne.exitVelocity;
+            players[0].Position.y += 10;
         }
 
-        if( playerOne.position.x < 0 )
+        if( players[0].Position.x < 0 )
         {
-            playerOne.position.x = 0;
+            players[0].Position.x = 0;
         }
 
-        if( playerOne.position.y < 0 )
+        if( players[0].Position.y < 0 )
         {
-            playerOne.position.y = 0;
+            players[0].Position.y = 0;
         }
 
     }
 
     function checkPosition()
     {
-        if( playerOne.position.x > ( width -  playerOne.size.width ) )
-        {
-            playerOne.position.x = width -  playerOne.size.width;
-        }
-
-        if( playerOne.position.y > ( height -  playerOne.size.height ) )
-        {
-            playerOne.position.y = height -  playerOne.size.height;
-            playerOne.velocity.y = -playerOne.velocity.y * 0.4;
-
-            if( Math.abs( playerOne.velocity.y ) < 20 )
+        players.forEach( o => {
+            if( o.Position.X > ( width - o.Size.Width ) )
             {
-                playerOne.velocity.y = 0;
+                o.Position.x = width -  o.Size.Width;
             }
-        }
+
+            if( o.Position.Y > ( height -  o.Size.Height ) )
+            {
+                o.Position.y = height -  o.Size.Height;
+                o.Velocity.y = -o.Velocity.Y * 0.4;
+
+                if( Math.abs( o.Velocity.Y ) < 20 )
+                {
+                    o.Velocity.y = 0;
+                }
+            }
+        } );
     }
 
     function getTicks()
@@ -128,13 +135,15 @@
     {
         var deltaT = ( ticks - oldTicks ) / 50;
 
-        playerOne.position.x += playerOne.velocity.x * deltaT;
-        playerOne.position.y += playerOne.velocity.y * deltaT;
+        allObjects.forEach( o => {
+            if( o instanceof MovingBlock )
+            {
+                o.Position.x += o.Velocity.X * deltaT;
+                o.Position.y += o.Velocity.Y * deltaT;
 
-    //    if( ! playerOne.onGround )
-        //{
-            playerOne.velocity.y += gravity * deltaT;
-    //    }
+                o.Velocity.y += gravity * deltaT;
+            }
+        })
     }
 
 
