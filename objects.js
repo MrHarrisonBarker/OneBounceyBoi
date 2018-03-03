@@ -122,6 +122,12 @@ class BasicBlock
     {
         return this.size;
     }
+
+
+    get Bottom()
+    {
+        return this.Position.Y + this.Size.Height;
+    }
 }
 
 
@@ -149,7 +155,7 @@ class Player extends MovingBlock
 {
     constructor()
     {
-        super( new Position( 25, 25 ), new Size( 14, 50 ), new Velocity( 0, 0 ) );
+        super( new Position( 25, 700 ), new Size( 14, 50 ), new Velocity( 0, 0 ) );
     }
 }
 
@@ -162,7 +168,11 @@ var players = [ new Player() ];
 
 var platforms =
 [
-    new BasicBlock( new Position( 50, 500 ), new Size( 400, 30 ) )
+    new BasicBlock( new Position( 0, 870 ), new Size( 900, 30 ) ),
+    new BasicBlock( new Position( 50, 500 ), new Size( 400, 30 ) ),
+    new BasicBlock( new Position( 300, 800 ), new Size( 400, 30 ) ),
+    new BasicBlock( new Position( 400, 700 ), new Size( 400, 30 ) ),
+    new BasicBlock( new Position( 500, 600 ), new Size( 400, 30 ) ),
 ]
 
 

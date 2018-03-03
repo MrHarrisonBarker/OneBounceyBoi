@@ -34,7 +34,9 @@
     }
 
     function drawLevel(){
-
+        platforms.forEach( p => {
+            makeRectangle( p.Position.X, p.Position.Y, p.Size.Width, p.Size.Height, "brown" );
+        });
     }
 
     function drawPlayer( player ){
@@ -99,16 +101,26 @@
                 o.Position.x = width -  o.Size.Width;
             }
 
-            if( o.Position.Y > ( height -  o.Size.Height ) )
-            {
-                o.Position.y = height -  o.Size.Height;
-                o.Velocity.y = -o.Velocity.Y * 0.4;
-
-                if( Math.abs( o.Velocity.Y ) < 20 )
+            platforms.forEach( p => {
+                if(
+                    ( o.Position.X > p.Position.X )
+                    &&
+                    ( o.Position.X < ( p.Position.X + p.Size.Width ) )
+                    &&
+                    ( o.Bottom > p.Position.Y )
+                    &&
+                    ( o.Bottom < p.Bottom )
+                    )
                 {
-                    o.Velocity.y = 0;
+                    o.Position.y = p.Position.Y - o.Size.Height;
+                    o.Velocity.y = -o.Velocity.Y * 0.4;
+
+                    if( Math.abs( o.Velocity.Y ) < 20 )
+                    {
+                        o.Velocity.y = 0;
+                    }
                 }
-            }
+            });
         } );
     }
 
