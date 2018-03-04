@@ -19,8 +19,9 @@ function drawPlatform( p )
 
 function drawThing( t )
 {
+	var r = t.Size.Width/2;
     context.beginPath();
-    context.arc( t.Position.X , t.Position.Y , t.Size.Width/2, 0, 2*Math.PI );
+    context.arc( t.Position.X + r , t.Position.Y + r , r, 0, 2*Math.PI );
     context.fillStyle = "blue";
     context.fill();
     context.closePath();

@@ -424,9 +424,9 @@ class Player extends MovingBlock
 
 class Thing extends MovingBlock
 {
-	constructor( initialPosition )
+	constructor( initialPosition, velocity )
 	{
-		super( initialPosition, new Size( 14, 14 ), new Velocity( 10, 10 ) );
+		super( initialPosition, new Size( 14, 14 ), velocity );
 	}
 
 
@@ -441,9 +441,12 @@ class Thing extends MovingBlock
 var players = [ new Player() ];
 
 var things = [ ];
-for( var i=0; i < Math.random() * 10; i++ )
+for( var i=0; i < 3 + ( Math.random() * 7 ); i++ )
 {
-	things.push( new Thing( new Position( Math.random() * 500, Math.random() * 500 ) ) );
+	things.push( new Thing(
+        new Position( 100 + Math.random() * 400, 100 + Math.random() * 400 ),
+        new Velocity( 4 * ( ( Math.random() * 10 ) - 5 ), 4 * ( ( Math.random() * 10) - 5 ) )
+    ) );
 }
 
 var platforms =
